@@ -23,7 +23,8 @@ def map_db_type_to_java(db_type: str) -> str:
         'numeric': 'BigDecimal',
         'decimal': 'BigDecimal',
         'double precision': 'Double',
-        'float8': 'Double'
+        'float8': 'Double',
+        'uuid' : 'java.util.UUID'
     }
 
     return mapping.get(db_type, 'String')  # 매핑 없으면 기본 String

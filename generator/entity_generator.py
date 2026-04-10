@@ -19,6 +19,7 @@ class EntityGenerator:
         fields = []
         for col in table_meta.columns:
             if col.name in audit_cols: continue
+            # print("FIELD: ", col.data_type)
             fields.append({
                 'name': col.name,
                 'field_name': to_camel_case(col.name),

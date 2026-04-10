@@ -5,6 +5,9 @@ project:
   base_package: "com.demo.portal.api.templates" # 도메인 모듈이 생성될 위치
   common_package: "com.demo.portal.common" # 공통 클래스(BaseEntity 등)가 있는 위치 (추가!)
 
+# ---------------------------------------------------------
+# 1. PostgreSQL 사용 시 설정 (현재 활성화됨)
+# ---------------------------------------------------------
 db_config:
   type: "postgresql"
   host: "localhost"
@@ -15,7 +18,37 @@ db_config:
 
 run:
   schema: "portal"
-  target_tables: [ ]
+  target_tables: [] # 값이 비어있으면 전체, 테이블명이 들어있으면 해당 entity만 생성
+
+# ---------------------------------------------------------
+# 2. Oracle 사용 시 설정 예시 (사용 시 위 설정을 지우거나 주석 처리하고 아래를 해제하세요)
+# ---------------------------------------------------------
+# db_config:
+#   type: "oracle"
+#   host: "localhost"
+#   port: 1521                  # 오라클 기본 포트
+#   user: "c##portal"           # 오라클 접속 계정 (12c 이상에서는 c## 접두사 사용 등 환경에 맞게 작성)
+#   password: "demo2026!"       # 계정 비밀번호
+#   database: "xe"              # 오라클 SID 또는 Service Name (예: xe, orcl)
+#
+# run:
+#   schema: "C##PORTAL"         # 오라클은 일반적으로 접속 계정명이 스키마명입니다. (대문자 권장)
+#   target_tables: [ ]
+
+# ---------------------------------------------------------
+# 3. MySQL / MariaDB 사용 시 설정 예시 (사용 시 위 설정을 지우거나 주석 처리하고 아래를 해제하세요)
+# ---------------------------------------------------------
+# db_config:
+#   type: "mysql"               # MariaDB일 경우 "mariadb"로 작성해도 무방합니다.
+#   host: "localhost"
+#   port: 3306                  # MySQL / MariaDB 기본 포트
+#   user: "root"                # 접속 계정
+#   password: "demo2026!"       # 계정 비밀번호
+#   database: "portal"          # 사용할 데이터베이스(스키마) 이름
+#
+# run:
+#   schema: "portal"            # MySQL/MariaDB는 데이터베이스명과 스키마명이 사실상 동일합니다.
+#   target_tables: [ ]
 
 generator_rules:
   audit_columns:
