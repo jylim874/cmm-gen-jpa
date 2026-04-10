@@ -1,11 +1,9 @@
-# 파일 경로: generator/repository_generator.py
-
 import os
 from jinja2 import Environment, FileSystemLoader
 from utils.name_util import to_entity_name, get_module_name
 
 
-class RepositoryGenerator:
+class ServiceGenerator:
     def __init__(self, config):
         self.config = config
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -15,28 +13,27 @@ class RepositoryGenerator:
     def generate(self, table_meta):
         entity_name = to_entity_name(table_meta.name)
 
+        # settings.yaml의 domain_mapping 정보를 사용하여 모듈명 결정
         domain_mapping = self.config.project.get('domain_mapping', {})
         module_name = get_module_name(table_meta.name, domain_mapping)
 
-        # 템플릿 목록
         targets = [
-            ('common/repository/repository.java.j2', f"{entity_name}Repository.java"),
-            ('common/repository/repository_custom.java.j2', f"{entity_name}RepositoryCustom.java"),
-            ('common/repository/repository_impl.java.j2', f"{entity_name}RepositoryImpl.java"),
+            ('common/service/service.java.j2', f"{entity_name}Service.java"),
+            ('common/service/service_impl.java.j2', f"{entity_name}ServiceImpl.java")
         ]
 
+        # 물리적 저장 경로 설정
         output_dir = os.path.join(
             self.config.project.get('home'),
             'src/main/java',
             self.config.base_package.replace('.', '/'),
             module_name,
-            'repository'
+            'service'
         )
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generated_files = []
         for tpl_path, file_name in targets:
             template = self.env.get_template(tpl_path)
             content = template.render(
@@ -45,9 +42,8 @@ class RepositoryGenerator:
                 entity_name=entity_name
             )
 
-            full_path = os.path.join(output_dir, file_name)
-            with open(full_path, 'w', encoding='utf-8') as f:
+            file_path = os.path.join(output_dir, file_name)
+            with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(content)
-            generated_files.append(full_path)
 
-        return generated_files
+        return output_dir

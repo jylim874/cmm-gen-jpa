@@ -1,0 +1,53 @@
+package {{ base_package }}.{{ module_name }}.controller;
+
+import {{ base_package }}.{{ module_name }}.dto.{{ entity_name }}Request;
+import {{ base_package }}.{{ module_name }}.dto.{{ entity_name }}Response;
+import {{ base_package }}.{{ module_name }}.service.{{ entity_name }}Service;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Tag(name = "{{ entity_name }}", description = "{{ entity_name }} 관리 API")
+@RestController
+@RequestMapping("/api/v1/{{ module_name }}/{{ entity_name | lower }}")
+@RequiredArgsConstructor
+public class {{ entity_name }}Controller {
+
+    private final {{ entity_name }}Service {{ entity_name | lower }}Service;
+
+    @PostMapping
+    @Operation(summary = "{{ entity_name }} 생성")
+    public ResponseEntity<{{ entity_name }}Response> create(@Valid @RequestBody {{ entity_name }}Request request) {
+        return ResponseEntity.ok({{ entity_name | lower }}Service.create(request));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "{{ entity_name }} 단건 조회")
+    public ResponseEntity<{{ entity_name }}Response> getById(@PathVariable Long id) {
+        return ResponseEntity.ok({{ entity_name | lower }}Service.getById(id));
+    }
+
+    @GetMapping
+    @Operation(summary = "{{ entity_name }} 목록 조회")
+    public ResponseEntity<List<{{ entity_name }}Response>> getAll() {
+        return ResponseEntity.ok({{ entity_name | lower }}Service.getAll());
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "{{ entity_name }} 수정")
+    public ResponseEntity<{{ entity_name }}Response> update(@PathVariable Long id, @Valid @RequestBody {{ entity_name }}Request request) {
+        return ResponseEntity.ok({{ entity_name | lower }}Service.update(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "{{ entity_name }} 삭제")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        {{ entity_name | lower }}Service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

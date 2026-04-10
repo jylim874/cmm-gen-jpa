@@ -1,0 +1,13 @@
+package {{ base_package }}.{{ module_name }}.service;
+
+import {{ base_package }}.{{ module_name }}.dto.{{ entity_name }}Request;
+import {{ base_package }}.{{ module_name }}.dto.{{ entity_name }}Response;
+import java.util.List;
+
+public interface {{ entity_name }}Service {
+    {{ entity_name }}Response create({{ entity_name }}Request request);
+    {{ entity_name }}Response getById(Long id);
+    List<{{ entity_name }}Response> getAll();
+    {{ entity_name }}Response update(Long id, {{ entity_name }}Request request);
+    void delete(Long id);
+}

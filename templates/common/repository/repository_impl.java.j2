@@ -6,9 +6,13 @@ import {{ base_package }}.{{ module_name }}.entity.Q{{ entity_name }};
 
 import static {{ base_package }}.{{ module_name }}.entity.Q{{ entity_name }}.{{ entity_name | lower }};
 
+/**
+
+설명: {{ entity_name }} QueryDSL 커스텀 구현체
+*/
 @RequiredArgsConstructor
 public class {{ entity_name }}RepositoryImpl implements {{ entity_name }}RepositoryCustom {
 
-    private final JPAQueryFactory queryFactory;
+private final JPAQueryFactory queryFactory;
 
 }

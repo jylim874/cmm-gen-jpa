@@ -14,11 +14,16 @@ import java.math.BigDecimal;
 @Schema(description = "{{ entity_name }} 요청 DTO")
 public class {{ entity_name }}Request {
 
-{% for field in fields %}
-    {%- if not field.is_pk %}
-    {% if field.comment %}@Schema(description = "{{ field.comment | e }}") {% endif %}
-    {%- if not field.is_nullable %}@NotNull {% endif %}
+{% for field in fields -%}
+    {%- if not field.is_pk -%}
+    {%- if field.comment %}
+    @Schema(description = "{{ field.comment | e }}")
+    {%- endif %}
+    {%- if not field.is_nullable %}
+    @NotNull
+    {%- endif %}
     private {{ field.type }} {{ field.field_name }};
-    {% endif %}
-{% endfor %}
+
+    {%- endif %}
+{% endfor -%}
 }

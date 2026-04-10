@@ -18,3 +18,12 @@ def to_camel_case(snake_str: str) -> str:
 def to_entity_name(table_name: str) -> str:
     """테이블명 -> 엔티티 클래스명 (예: user_role_map -> UserRoleMap)"""
     return to_pascal_case(table_name)
+
+def get_module_name(table_name, domain_mapping):
+    """테이블명이 속한 도메인(모듈) 명을 반환합니다."""
+    # print("DOMAIN_MAPPING:", domain_mapping)
+
+    for module, tables in domain_mapping.items():
+        if table_name in tables:
+            return module
+    return table_name.split('_')[0]  # 매핑 없으면 첫 단어 사용

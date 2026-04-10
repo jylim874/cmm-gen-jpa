@@ -4,6 +4,10 @@ import {{ base_package }}.{{ module_name }}.entity.{{ entity_name }};
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+
+설명: {{ entity_name }} 기본 Repository
+*/
 @Repository
 public interface {{ entity_name }}Repository extends JpaRepository<{{ entity_name }}, Long>, {{ entity_name }}RepositoryCustom {
 }

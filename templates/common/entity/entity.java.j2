@@ -1,4 +1,4 @@
-package {{ base_package }}.{{ table_name.split('_')[0] }}.entity;
+package {{ base_package }}.{{ module_name }}.entity;
 
 import {{ common_package }}.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -24,18 +24,19 @@ import java.math.BigDecimal;
 @Schema(description = "{{ table_comment | e }}")
 public class {{ entity_name }} extends BaseEntity {
 
-{% for field in fields %}
-    {% if field.comment %}@Schema(description = "{{ field.comment | e }}")
-    {% endif -%}
-    {% if field.is_pk -%}
+{% for field in fields -%}
+    {%- if field.comment %}
+    @Schema(description = "{{ field.comment | e }}")
+    {%- endif %}
+    {%- if field.is_pk %}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    {% endif -%}
-    {% if not field.is_nullable -%}
+    {%- endif %}
+    {%- if not field.is_nullable %}
     @NotNull
-    {% endif -%}
+    {%- endif %}
     @Column(name = "{{ field.name }}"{% if not field.is_nullable %}, nullable = false{% endif %})
     private {{ field.type }} {{ field.field_name }};
 
-{% endfor %}
+{% endfor -%}
 }

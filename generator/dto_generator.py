@@ -1,10 +1,7 @@
-# 파일 경로: generator/dto_generator.py
-
 import os
 from jinja2 import Environment, FileSystemLoader
-from utils.name_util import to_entity_name, to_camel_case
+from utils.name_util import to_entity_name, to_camel_case, get_module_name
 from .type_mapper import map_db_type_to_java
-
 
 class DtoGenerator:
     def __init__(self, config):
@@ -15,9 +12,10 @@ class DtoGenerator:
 
     def generate(self, table_meta):
         entity_name = to_entity_name(table_meta.name)
-        module_name = table_meta.name.split('_')[0]
+        # domain_mapping 적용
+        domain_mapping = self.config.project.get('domain_mapping', {})
+        module_name = get_module_name(table_meta.name, domain_mapping)
 
-        # 필드 추출 (Request용은 PK 제외, Response용은 포함 등 자유롭게 조절 가능)
         fields = []
         for col in table_meta.columns:
             fields.append({
@@ -40,9 +38,7 @@ class DtoGenerator:
             module_name,
             'dto'
         )
-
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+        if not os.path.exists(output_dir): os.makedirs(output_dir)
 
         for tpl_path, file_name in targets:
             template = self.env.get_template(tpl_path)

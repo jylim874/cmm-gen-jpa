@@ -1,0 +1,49 @@
+package {{ base_package }}.{{ module_name }}.service;
+
+import {{ base_package }}.{{ module_name }}.entity.{{ entity_name }};
+import {{ base_package }}.{{ module_name }}.repository.{{ entity_name }}Repository;
+import {{ base_package }}.{{ module_name }}.dto.{{ entity_name }}Request;
+import {{ base_package }}.{{ module_name }}.dto.{{ entity_name }}Response;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class {{ entity_name }}ServiceImpl implements {{ entity_name }}Service {
+
+    private final {{ entity_name }}Repository {{ entity_name | lower }}Repository;
+
+    @Override
+    @Transactional
+    public {{ entity_name }}Response create({{ entity_name }}Request request) {
+        // TODO: 변환 로직(Entity <-> DTO)은 나중에 MapStruct 도입 추천
+        return null;
+    }
+
+    @Override
+    public {{ entity_name }}Response getById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<{{ entity_name }}Response> getAll() {
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public {{ entity_name }}Response update(Long id, {{ entity_name }}Request request) {
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        {{ entity_name | lower }}Repository.deleteById(id);
+    }
+}

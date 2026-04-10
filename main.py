@@ -1,61 +1,56 @@
-# 파일 경로: main.py
-
+import sys
 import os
 from config import load_config
 from db.postgres_reader import PostgresReader
-from generator.dto_generator import DtoGenerator
 from generator.entity_generator import EntityGenerator
-from generator.repository_generator import RepositoryGenerator # 상단에 추가
-
+from generator.repository_generator import RepositoryGenerator
+from generator.dto_generator import DtoGenerator
+from generator.service_generator import ServiceGenerator
+from generator.controller_generator import ControllerGenerator
 
 def main():
     try:
-        # 1. 설정 로드
         print("🚀 [1/4] 설정을 로드하는 중...")
         config = load_config()
 
-        # 2. DB 접속
-        print(f"🔗 [2/4] {config.db_type} 데이터베이스 접속 시도...")
+        # 🔍 도메인 매핑 로드 확인 (이 로그가 비어있으면 매핑이 안 된 것입니다)
+        print("-" * 50)
+        mapping = config.project.get('domain_mapping', {})
+        if not mapping:
+            print("⚠️  [경고] 도메인 매핑 데이터가 비어있습니다! config/domains/ 폴더를 확인하세요.")
+        else:
+            print(f"📍 로드된 도메인 모듈: {list(mapping.keys())}")
+            for k, v in mapping.items():
+                print(f"   - {k}: {v}")
+        print("-" * 50)
+
+        print(f"🔗 [2/4] DB 접속 시도 ({config.db_type})...")
         reader = PostgresReader(config)
         reader.connect()
 
-        # 3. 테이블 및 컬럼 정보 추출
-        print(f"📂 [3/4] '{config.schema}' 스키마에서 메타데이터를 추출하는 중...")
+        print(f"📂 [3/4] '{config.schema}' 스키마에서 메타데이터 추출 중...")
         tables = reader.get_tables(target_tables=config.target_tables)
 
-        if not tables:
-            print(f"⚠️  '{config.schema}' 스키마에 테이블이 없거나 설정을 확인해 주세요.")
-            return
-
-        # 4. 코드 생성기 초기화 및 실행
-        print(f"🛠️  [4/4] 총 {len(tables)}개 테이블에 대한 Java 파일 생성을 시작합니다.")
-        entity_gen = EntityGenerator(config)
-        repo_gen = RepositoryGenerator(config)  # 4단계 시작 부분에 추가
-        dto_gen = DtoGenerator(config)
+        print(f"🛠️  [4/4] 총 {len(tables)}개 테이블 소스 코드 생성 시작...")
+        gens = [
+            EntityGenerator(config),
+            RepositoryGenerator(config),
+            DtoGenerator(config),
+            ServiceGenerator(config),
+            ControllerGenerator(config)
+        ]
 
         for table in tables:
-            try:
-                # Entity 생성 실행
-                file_path = entity_gen.generate(table)
-                # Repository 생성 추가
-                repo_gen.generate(table)
-                dto_gen.generate(table)
+            for gen in gens:
+                gen.generate(table)
+            print(f" ✅ 생성 완료: {table.name}")
 
-                print(f" ✅ 생성 완료: {table.name} -> {os.path.basename(file_path)}")
-
-
-            except Exception as gen_e:
-                print(f" ❌ 테이블 '{table.name}' 생성 중 오류: {gen_e}")
-
-        print("\n✨ 모든 작업이 완료되었습니다!")
-        print(f"📍 출력 경로: {config.project.get('home')}")
+        print("\n✨ 모든 작업이 성공적으로 완료되었습니다.")
 
     except Exception as e:
-        print(f"\n🚨 실행 중 치명적 오류 발생: {e}")
-    finally:
-        if 'reader' in locals() and hasattr(reader, 'conn') and reader.conn:
-            reader.close()
-
+        print(f"\n🚨 치명적 오류 발생: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()
