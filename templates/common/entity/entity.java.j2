@@ -1,0 +1,41 @@
+package {{ base_package }}.{{ table_name.split('_')[0] }}.entity;
+
+import {{ common_package }}.entity.BaseEntity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+
+import java.time.OffsetDateTime;
+import java.time.LocalDate;
+import java.math.BigDecimal;
+
+/**
+ * 테이블명: {{ table_name }}
+ * 설명: {{ table_comment if table_comment else entity_name }}
+ */
+@Entity
+@Table(name = "{{ table_name }}", schema = "portal")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Schema(description = "{{ table_comment | e }}")
+public class {{ entity_name }} extends BaseEntity {
+
+{% for field in fields %}
+    {% if field.comment %}@Schema(description = "{{ field.comment | e }}")
+    {% endif -%}
+    {% if field.is_pk -%}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    {% endif -%}
+    {% if not field.is_nullable -%}
+    @NotNull
+    {% endif -%}
+    @Column(name = "{{ field.name }}"{% if not field.is_nullable %}, nullable = false{% endif %})
+    private {{ field.type }} {{ field.field_name }};
+
+{% endfor %}
+}

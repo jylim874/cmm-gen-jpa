@@ -1,0 +1,14 @@
+package {{ base_package }}.{{ module_name }}.repository;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+import {{ base_package }}.{{ module_name }}.entity.Q{{ entity_name }};
+
+import static {{ base_package }}.{{ module_name }}.entity.Q{{ entity_name }}.{{ entity_name | lower }};
+
+@RequiredArgsConstructor
+public class {{ entity_name }}RepositoryImpl implements {{ entity_name }}RepositoryCustom {
+
+    private final JPAQueryFactory queryFactory;
+
+}

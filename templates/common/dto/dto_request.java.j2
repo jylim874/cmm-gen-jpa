@@ -1,0 +1,24 @@
+package {{ base_package }}.{{ module_name }}.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(description = "{{ entity_name }} 요청 DTO")
+public class {{ entity_name }}Request {
+
+{% for field in fields %}
+    {%- if not field.is_pk %}
+    {% if field.comment %}@Schema(description = "{{ field.comment | e }}") {% endif %}
+    {%- if not field.is_nullable %}@NotNull {% endif %}
+    private {{ field.type }} {{ field.field_name }};
+    {% endif %}
+{% endfor %}
+}

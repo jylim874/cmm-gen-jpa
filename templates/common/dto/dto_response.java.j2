@@ -1,0 +1,20 @@
+package {{ base_package }}.{{ module_name }}.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+import java.time.OffsetDateTime;
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(description = "{{ entity_name }} 응답 DTO")
+public class {{ entity_name }}Response {
+
+{% for field in fields %}
+    {% if field.comment %}@Schema(description = "{{ field.comment | e }}") {% endif %}
+    private {{ field.type }} {{ field.field_name }};
+{% endfor %}
+}

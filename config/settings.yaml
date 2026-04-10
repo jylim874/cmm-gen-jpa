@@ -1,0 +1,26 @@
+# 파일 경로: config/settings.yaml
+
+project:
+  home: "C:/Users/tlfps/IdeaProjects/portal" # 슬래시로 변경 완료
+  base_package: "com.demo.portal.api.templates" # 도메인 모듈이 생성될 위치
+  common_package: "com.demo.portal.common" # 공통 클래스(BaseEntity 등)가 있는 위치 (추가!)
+
+db_config:
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: "demo2026!"
+  database: "postgres"
+
+run:
+  schema: "portal"
+  target_tables: [ ]
+
+generator_rules:
+  audit_columns:
+    - "created_at"
+    - "created_by"
+    - "updated_at"
+    - "updated_by"
+    - "deleted_yn"
