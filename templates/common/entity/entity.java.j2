@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.OffsetDateTime;
 import java.time.LocalDate;
@@ -21,10 +22,9 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Schema(description = "{{ table_comment | e }}")
 public class {{ entity_name }} extends {% if is_map_entity %}BaseMapEntity{% else %}BaseEntity{% endif %} {
-
 {% for field in fields -%}
     {%- if field.comment %}
     @Schema(description = "{{ field.comment | e }}")
@@ -38,6 +38,5 @@ public class {{ entity_name }} extends {% if is_map_entity %}BaseMapEntity{% els
     {%- endif %}
     @Column(name = "{{ field.name }}"{% if not field.is_nullable %}, nullable = false{% endif %})
     private {{ field.type }} {{ field.field_name }};
-
 {% endfor -%}
 }

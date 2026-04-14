@@ -12,12 +12,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Schema(description = "{{ entity_name }} 응답 DTO")
 public class {{ entity_name }}Response {
-
 {% for field in fields -%}
     {%- if field.comment %}
     @Schema(description = "{{ field.comment | e }}")
     {%- endif %}
     private {{ field.type }} {{ field.field_name }};
-
 {% endfor -%}
 }
