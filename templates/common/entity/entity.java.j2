@@ -33,7 +33,7 @@ public class {{ entity_name }} extends {% if is_map_entity %}BaseMapEntity{% els
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     {%- endif %}
-    {%- if not field.is_nullable %}
+    {%- if not field.is_nullable and not field.is_pk %}
     @NotNull
     {%- endif %}
     @Column(name = "{{ field.name }}"{% if not field.is_nullable %}, nullable = false{% endif %})
