@@ -2,7 +2,7 @@
 
 project:
   home: "C:/Users/tlfps/IdeaProjects/portal" # 슬래시로 변경 완료
-  base_package: "com.demo.portal.api.templates" # 도메인 모듈이 생성될 위치
+  base_package: "com.demo.portal.api" # 도메인 모듈이 생성될 위치
   common_package: "com.demo.portal.common" # 공통 클래스(BaseEntity 등)가 있는 위치 (추가!)
 
 # ---------------------------------------------------------
@@ -19,6 +19,7 @@ db_config:
 run:
   schema: "portal"
   target_tables: [] # 값이 비어있으면 전체, 테이블명이 들어있으면 해당 entity만 생성
+  target_domain: [] # 값이 비어있으면 전체, domain이 들어있으면 해당 Domain Entity만 생성
 
 # ---------------------------------------------------------
 # 2. Oracle 사용 시 설정 예시 (사용 시 위 설정을 지우거나 주석 처리하고 아래를 해제하세요)

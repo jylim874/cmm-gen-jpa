@@ -1,6 +1,6 @@
 package {{ base_package }}.{{ module_name }}.entity;
 
-{% set is_map_entity = entity_name.endswith('Map') or entity_name.endswith('Logs') -%}
+{% set is_map_entity = entity_name.endswith('Map') or entity_name.endswith('Log') -%}
 import {{ common_package }}.entity.{% if is_map_entity %}BaseMapEntity{% else %}BaseEntity{% endif %};
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

@@ -22,7 +22,8 @@ class Config:
 
         # 🔍 속성 직접 정의 (이 부분이 누락되면 AttributeError가 발생합니다)
         self.schema = self.run.get('schema', 'public')
-        self.target_tables = self.run.get('target_tables', [])  # 이 줄을 꼭 추가하세요!
+        self.target_tables = self.run.get('target_tables', [])
+        self.target_domain = self.run.get('target_domain', [])
 
         # DB 타입 검증
         self.db_type = self.db_config.get('type', 'postgresql').lower()

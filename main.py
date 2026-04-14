@@ -7,6 +7,8 @@ from generator.repository_generator import RepositoryGenerator
 from generator.dto_generator import DtoGenerator
 from generator.service_generator import ServiceGenerator
 from generator.controller_generator import ControllerGenerator
+from utils.name_util import get_module_name
+
 
 def main():
     try:
@@ -30,6 +32,27 @@ def main():
 
         print(f"📂 [3/4] '{config.schema}' 스키마에서 메타데이터 추출 중...")
         tables = reader.get_tables(target_tables=config.target_tables)
+
+        if not tables:
+            print(f"⚠️  스키마에 테이블이 없거나 설정을 확인해 주세요.")
+            return
+
+            # 🔍 2. target_domain 필터링 로직 추가 (여기가 핵심!)
+        if config.target_domain:
+            domain_mapping = config.project.get('domain_mapping', {})
+            filtered_tables = []
+
+            for table in tables:
+                module_name = get_module_name(table.name, domain_mapping)
+                if module_name in config.target_domain:
+                    filtered_tables.append(table)
+
+            tables = filtered_tables
+            print(f"🎯 target_domain 필터 적용: {config.target_domain} 도메인에 속한 {len(tables)}개 테이블만 선택되었습니다.")
+
+            if not tables:
+                print("⚠️  조건에 맞는 테이블이 없어 프로그램을 종료합니다.")
+                return
 
         print(f"🛠️  [4/4] 총 {len(tables)}개 테이블 소스 코드 생성 시작...")
         gens = [
