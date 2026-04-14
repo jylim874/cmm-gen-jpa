@@ -1,0 +1,8 @@
+auth:
+  - roles
+  - permissions
+  - api_resources
+  - user_role_map
+  - role_permission_map
+  - permission_api_map
+  - auth_change_logs

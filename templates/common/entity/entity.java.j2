@@ -1,6 +1,7 @@
 package {{ base_package }}.{{ module_name }}.entity;
 
-import {{ common_package }}.entity.BaseEntity;
+{% set is_map_entity = entity_name.endswith('Map') -%}
+import {{ common_package }}.entity.{% if is_map_entity %}BaseMapEntity{% else %}BaseEntity{% endif %};
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +23,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Schema(description = "{{ table_comment | e }}")
-public class {{ entity_name }} extends BaseEntity {
+public class {{ entity_name }} extends {% if is_map_entity %}BaseMapEntity{% else %}BaseEntity{% endif %} {
 
 {% for field in fields -%}
     {%- if field.comment %}
