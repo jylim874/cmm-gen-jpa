@@ -1,0 +1,7 @@
+common:
+  - code
+  - lifecycle
+  - menu
+  - language
+  - system_message
+  - system_message_translation
